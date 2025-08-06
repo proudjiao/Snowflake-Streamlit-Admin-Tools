@@ -101,7 +101,7 @@ def refresh_table_create_drop_status(session, days: int = 7):
     # -------------------------------
     # Step 0: Check if refresh is needed
     # -------------------------------
-    status_table = "DAASITY.DATAGOV.TABLE_CREATE_DROP_STATUS_IN_7_DAYS"
+    status_table = "db.datagov_schema.TABLE_CREATE_DROP_STATUS_IN_7_DAYS"
     try:
         ts_check_query = f"""
             SELECT MAX(LAST_UPDATED) AS LAST_UPDATED
@@ -222,11 +222,11 @@ def refresh_table_create_drop_status(session, days: int = 7):
         all_tables_df,
         auto_create_table=True,
         table_name="TABLE_CREATE_DROP_STATUS_IN_7_DAYS",
-        database="DAASITY",
-        schema="DATAGOV",
+        database="db",
+        schema="datagov_schema",
         overwrite=True
     )
-    st.info(f"Marked All table successfully. result {Counter(all_tables_df['RECREATED_IN_PAST_7_DAYS'])} table_create_drop_status_in_7_days written to DAASITY.DATAGOV")
+    st.info(f"Marked All table successfully. result {Counter(all_tables_df['RECREATED_IN_PAST_7_DAYS'])} table_create_drop_status_in_7_days written to db.datagov_schema")
 
 def check_for_recreated_tables(session, table_df: pd.DataFrame) -> tuple[list[str], list[str]]:
     """
@@ -237,7 +237,7 @@ def check_for_recreated_tables(session, table_df: pd.DataFrame) -> tuple[list[st
         st.info("No table data provided.")
         return [], []
 
-    status_table = "daasity.datagov.table_create_drop_status_in_7_days"
+    status_table = "db.datagov_schema.table_create_drop_status_in_7_days"
     st.info("Determining which tables/schema needs grants to future access...")
 
     try:
